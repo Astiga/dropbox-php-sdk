@@ -227,6 +227,23 @@ class DropboxAuthHelper
     }
 
     /**
+     * Refresh Access Token
+     *
+     * @param  string $refreshToken Refresh Token
+     * @param  string $redirectUri  Redirect URI used while getAuthUrl
+     *
+     * @return \Kunnu\Dropbox\Models\AccessToken
+     */
+    public function refreshAccessToken($refreshToken)
+    {
+        //Fetch Access Token
+        $accessToken = $this->getOAuth2Client()->refreshAccessToken($refreshToken);
+
+        //Make and return the model
+        return new AccessToken($accessToken);
+    }
+
+    /**
      * Revoke Access Token
      *
      * @return void

@@ -115,7 +115,7 @@ class OAuth2Client
             'state' => $state,
             ], $params);
 
-        if (!is_null($redirectUri)) {
+        if(!is_null($redirectUri)) {
             $params['redirect_uri'] = $redirectUri;
         }
 
@@ -152,6 +152,43 @@ class OAuth2Client
         $response = $this->getClient()
         ->getHttpClient()
         ->send($uri, "POST", null);
+
+        //Fetch Response Body
+        $body = $response->getBody();
+
+        //Decode the Response body to associative array
+        //and return
+        return json_decode((string) $body, true);
+    }
+
+    /**
+     * Refresh Access Token
+     *
+     * @param  string $refresh_token    Refresh Token
+     * @param  string $grant_type       Grant Type ['refresh_token']
+     *
+     * @return array
+     */
+    public function refreshAccessToken($refresh_token, $grant_type = 'refresh_token')
+    {
+        //Request Params
+        $params = [
+            'refresh_token' => $refresh_token,
+            'grant_type' => $grant_type,
+            'client_id' => $this->getApp()->getClientId(),
+            'client_secret' => $this->getApp()->getClientSecret()
+        ];
+
+        $params = http_build_query($params);
+
+        $apiUrl = static::AUTH_TOKEN_URL;
+        $uri = $apiUrl . "?" . $params;
+
+        //Send Request through the DropboxClient
+        //Fetch the Response (DropboxRawResponse)
+        $response = $this->getClient()
+            ->getHttpClient()
+            ->send($uri, "POST", null);
 
         //Fetch Response Body
         $body = $response->getBody();
