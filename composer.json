@@ -13,8 +13,16 @@
             "email": "kunalvarma05@gmail.com"
         }
     ],
+    "config": {
+        "platform": {
+          "php": "7.4"
+        },
+        "allow-plugins": {
+          "php-http/discovery": true
+        }
+    },
     "require": {
-        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/guzzle": "~7.0",
         "tightenco/collect": "^5.2"
     },
     "autoload": {
